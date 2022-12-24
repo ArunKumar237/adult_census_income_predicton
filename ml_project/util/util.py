@@ -108,4 +108,4 @@ def load_data(file_path: str, schema_file_path: str) -> pd.DataFrame:
         return dataframe
 
     except Exception as e:
-        raise ProjectException(e,sys) from e
+        raise ProjectException(e,sys) from e 
