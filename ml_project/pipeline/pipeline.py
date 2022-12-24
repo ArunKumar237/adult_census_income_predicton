@@ -3,7 +3,7 @@ from datetime import datetime
 import uuid
 from ml_project.config.configuration import Configuartion
 from ml_project.logger import logging, get_log_file_name
-from ml_project.exception import PredictException
+from ml_project.exception import ProjectException
 from threading import Thread
 from typing import List
 
@@ -42,14 +42,14 @@ class Pipeline(Thread):
             super().__init__(daemon=False, name="pipeline")
             self.config = config
         except Exception as e:
-            raise PredictException(e, sys) from e
+            raise ProjectException(e, sys) from e
 
     def start_data_ingestion(self) -> DataIngestionArtifact:
         try:
             data_ingestion = DataIngestion(data_ingestion_config=self.config.get_data_ingestion_config())
             return data_ingestion.initiate_data_ingestion()
         except Exception as e:
-            raise PredictException(e, sys) from e
+            raise ProjectException(e, sys) from e
 
     def start_data_validation(self, data_ingestion_artifact: DataIngestionArtifact) \
             -> DataValidationArtifact:
@@ -59,7 +59,7 @@ class Pipeline(Thread):
                                              )
             return data_validation.initiate_data_validation()
         except Exception as e:
-            raise PredictException(e, sys) from e
+            raise ProjectException(e, sys) from e
 
     def start_data_transformation(self,
                                   data_ingestion_artifact: DataIngestionArtifact,
@@ -73,7 +73,7 @@ class Pipeline(Thread):
             )
             return data_transformation.initiate_data_transformation()
         except Exception as e:
-            raise PredictException(e, sys)
+            raise ProjectException(e, sys)
 
     def start_model_trainer(self, data_transformation_artifact: DataTransformationArtifact) -> ModelTrainerArtifact:
         try:
@@ -82,7 +82,7 @@ class Pipeline(Thread):
                                          )
             return model_trainer.initiate_model_trainer()
         except Exception as e:
-            raise PredictException(e, sys) from e
+            raise ProjectException(e, sys) from e
 
     def start_model_evaluation(self, data_ingestion_artifact: DataIngestionArtifact,
                                data_validation_artifact: DataValidationArtifact,
@@ -95,7 +95,7 @@ class Pipeline(Thread):
                 model_trainer_artifact=model_trainer_artifact)
             return model_eval.initiate_model_evaluation()
         except Exception as e:
-            raise PredictException(e, sys) from e
+            raise ProjectException(e, sys) from e
 
     def start_model_pusher(self, model_eval_artifact: ModelEvaluationArtifact) -> ModelPusherArtifact:
         try:
@@ -105,7 +105,7 @@ class Pipeline(Thread):
             )
             return model_pusher.initiate_model_pusher()
         except Exception as e:
-            raise PredictException(e, sys) from e
+            raise ProjectException(e, sys) from e
 
     def run_pipeline(self):
         try:
@@ -168,7 +168,7 @@ class Pipeline(Thread):
             logging.info(f"Pipeline experiment: {Pipeline.experiment}")
             self.save_experiment()
         except Exception as e:
-            raise PredictException(e, sys) from e
+            raise ProjectException(e, sys) from e
 
     def run(self):
         try:
@@ -197,7 +197,7 @@ class Pipeline(Thread):
             else:
                 print("First start experiment")
         except Exception as e:
-            raise PredictException(e, sys) from e
+            raise ProjectException(e, sys) from e
 
     @classmethod
     def get_experiments_status(cls, limit: int = 5) -> pd.DataFrame:
@@ -209,4 +209,4 @@ class Pipeline(Thread):
             else:
                 return pd.DataFrame()
         except Exception as e:
-            raise PredictException(e, sys) from e
+            raise ProjectException(e, sys) from e
