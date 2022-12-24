@@ -1,0 +1,29 @@
+grid_search:
+  class: GridSearchCV
+  module: sklearn.model_selection
+  params:
+    cv: 5
+    verbose: 2
+model_selection:
+  module_1:
+    class: RandomForestClassifier
+    module: sklearn.ensemble
+    params:
+      n_estimators: 20
+      max_features: 0.2
+      max_depth: 2
+      max_samples: 0.5
+    search_param_grid:
+      n_estimators:
+      - 60
+      - 100
+      - 120
+      max_features:
+      - 0.6
+      - 1.0
+      max_depth:
+      - 8
+      - 10
+      max_samples:
+      - 0.75
+      - 1.0 
