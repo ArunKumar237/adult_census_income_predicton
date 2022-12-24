@@ -1,0 +1,31 @@
+columns: 
+  age : int
+  workclass	: category
+  fnlwgt : int
+  education :	category
+  education-num	: int
+  marital-status :	category
+  occupation : category
+  relationship : category
+  race : category
+  sex : category
+  capital-gain : int
+  capital-loss : int
+  hours-per-week :	int
+  country : category
+  salary : category
+numerical_columns:
+  - Total_Stops
+  - journey_Date
+  - journey_Month
+  - Dep_hour
+  - Dep_min
+  - Arrival_hour
+  - Arrival_min
+  - Duration_hours
+  - Duration_mins
+categorical_columns:
+  - Airline
+  - Source
+  - Destination
+target_column: Price
