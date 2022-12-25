@@ -1,16 +1,16 @@
-from flight.exception import FlightException
+from ml_project.exception import ProjectException
 import sys
-from flight.logger import logging
+from ml_project.logger import logging
 from typing import List
-from flight.entity.artifact_entity import DataTransformationArtifact, ModelTrainerArtifact
-from flight.entity.config_entity import ModelTrainerConfig
-from flight.util.util import load_numpy_array_data,save_object,load_object
-from flight.entity.model_factory import MetricInfoArtifact, ModelFactory,GridSearchedBestModel
-from flight.entity.model_factory import evaluate_regression_model
+from ml_project.entity.artifact_entity import DataTransformationArtifact, ModelTrainerArtifact
+from ml_project.entity.config_entity import ModelTrainerConfig
+from ml_project.util.util import load_numpy_array_data,save_object,load_object
+from ml_project.entity.model_factory import MetricInfoArtifact, ModelFactory,GridSearchedBestModel
+from ml_project.entity.model_factory import evaluate_regression_model
 
 
 
-class flightEstimatorModel:
+class ml_projectEstimatorModel:
     def __init__(self, preprocessing_object, trained_model_object):
         """
         TrainedModel constructor
@@ -46,7 +46,7 @@ class ModelTrainer:
             self.model_trainer_config = model_trainer_config
             self.data_transformation_artifact = data_transformation_artifact
         except Exception as e:
-            raise FlightException(e, sys) from e
+            raise ProjectException(e, sys) from e
 
     def initiate_model_trainer(self)->ModelTrainerArtifact:
         try:
@@ -91,9 +91,9 @@ class ModelTrainer:
 
 
             trained_model_file_path=self.model_trainer_config.trained_model_file_path
-            flight_model = flightEstimatorModel(preprocessing_object=preprocessing_obj,trained_model_object=model_object)
+            ml_project_model = ml_projectEstimatorModel(preprocessing_object=preprocessing_obj,trained_model_object=model_object)
             logging.info(f"Saving model at path: {trained_model_file_path}")
-            save_object(file_path=trained_model_file_path,obj=flight_model)
+            save_object(file_path=trained_model_file_path,obj=ml_project_model)
 
 
             model_trainer_artifact=  ModelTrainerArtifact(is_trained=True,message="Model Trained successfully",
@@ -109,7 +109,7 @@ class ModelTrainer:
             logging.info(f"Model Trainer Artifact: {model_trainer_artifact}")
             return model_trainer_artifact
         except Exception as e:
-            raise FlightException(e, sys) from e
+            raise ProjectException(e, sys) from e
 
     def __del__(self):
         logging.info(f"{'>>' * 30}Model trainer log completed.{'<<' * 30} ")
