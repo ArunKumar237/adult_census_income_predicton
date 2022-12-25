@@ -11,7 +11,7 @@ import json
 from ml_project.config.configuration import Configuartion
 from ml_project.constant import CONFIG_DIR, get_current_time_stamp
 from ml_project.pipeline.pipeline import Pipeline
-from ml_project.entity.ml_project_predictor import ml_projectPredictor, ml_projectData
+from ml_project.entity.predictor import ml_projectPredictor, ml_projectData
 from flask import send_file, abort, render_template
 
 
