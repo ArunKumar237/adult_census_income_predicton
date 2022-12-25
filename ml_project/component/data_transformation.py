@@ -8,13 +8,22 @@ DataValidationArtifact,DataTransformationArtifact
 import sys,os
 import numpy as np
 from sklearn.base import BaseEstimator,TransformerMixin
-from sklearn.preprocessing import StandardScaler,OneHotEncoder
+from sklearn.preprocessing import StandardScaler,OrdinalEncoder
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 import pandas as pd
 from ml_project.constant import *
 from ml_project.util.util import read_yaml_file,save_object,save_numpy_array_data,load_data
+
+# class MyLabelEncoder(TransformerMixin):
+#     def __init__(self, *args, **kwargs):
+#         self.encoder = LabelEncoder(*args, **kwargs)
+#     def fit(self, x, y=0):
+#         self.encoder.fit(x)
+#         return self
+#     def transform(self, x, y=0):
+#         return self.encoder.transform(x)
 
 class DataTransformation:
 
@@ -51,7 +60,7 @@ class DataTransformation:
 
             cat_pipeline = Pipeline(steps=[
                  ('impute', SimpleImputer(strategy="most_frequent")),
-                 ('one_hot_encoder', OneHotEncoder()),
+                 ('label_encoder', OrdinalEncoder()),
                  ('scaler', StandardScaler(with_mean=False))
             ]
             )
@@ -100,6 +109,13 @@ class DataTransformation:
             input_feature_test_df = test_df.drop(columns=[target_column_name],axis=1)
             target_feature_test_df = test_df[target_column_name]
             
+            print('------------------------------\n')
+            print(input_feature_train_df.columns)
+            print(input_feature_train_df.shape)
+            print('------------------------------\n')
+            print(target_feature_train_df.name)
+            print(target_feature_train_df.shape)
+            print('------------------------------\n')
 
             logging.info(f"Applying preprocessing object on training dataframe and testing dataframe")
             input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
