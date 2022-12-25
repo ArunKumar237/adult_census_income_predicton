@@ -10,7 +10,7 @@ import sys
 from collections import namedtuple
 from typing import List
 from ml_project.logger import logging
-from sklearn.metrics import r2_score,mean_squared_error
+from sklearn.metrics import accuracy_score, f1_score
 GRID_SEARCH_KEY = 'grid_search'
 MODULE_KEY = 'module'
 CLASS_KEY = 'class'
@@ -35,7 +35,7 @@ BestModel = namedtuple("BestModel", ["model_serial_number",
                                      "best_score", ])
 
 MetricInfoArtifact = namedtuple("MetricInfoArtifact",
-                                ["model_name", "model_object", "train_rmse", "test_rmse", "train_accuracy",
+                                ["model_name", "model_object", "train_f1_score", "test_f1_score", "train_accuracy",
                                  "test_accuracy", "model_accuracy", "index_number"])
 
 
@@ -75,36 +75,36 @@ def evaluate_regression_model(model_list: list, X_train:np.ndarray, y_train:np.n
             y_test_pred = model.predict(X_test)
 
             #Calculating r squared score on training and testing dataset
-            train_acc = r2_score(y_train, y_train_pred)
-            test_acc = r2_score(y_test, y_test_pred)
+            train_acc = accuracy_score(y_pred=y_train_pred, y_true=y_train)
+            test_acc = accuracy_score(y_pred=y_test_pred, y_true=y_test)
             
             #Calculating mean squared error on training and testing dataset
-            train_rmse = np.sqrt(mean_squared_error(y_train, y_train_pred))
-            test_rmse = np.sqrt(mean_squared_error(y_test, y_test_pred))
+            train_f1_score = f1_score(y_pred=y_train_pred, y_true=y_train, average='weighted')
+            test_f1_score = f1_score(y_pred=y_test_pred, y_true=y_test, average='weighted')
 
             # Calculating harmonic mean of train_accuracy and test_accuracy
-            model_accuracy = (2 * (train_acc * test_acc)) / (train_acc + test_acc)
-            diff_test_train_acc = abs(test_acc - train_acc)
+            model_accuracy = (2 * (train_f1_score * test_f1_score)) / (train_f1_score + test_f1_score)
+            diff_test_train_acc = abs(test_f1_score - train_f1_score)
             
             #logging all important metric
             logging.info(f"{'>>'*30} Score {'<<'*30}")
-            logging.info(f"Train Score\t\t Test Score\t\t Average Score")
-            logging.info(f"{train_acc}\t\t {test_acc}\t\t{model_accuracy}")
+            logging.info(f"Train F1 Score\t\t Test F1 Score\t\t Average Score")
+            logging.info(f"{train_f1_score}\t\t {test_f1_score}\t\t{model_accuracy}")
 
             logging.info(f"{'>>'*30} Loss {'<<'*30}")
             logging.info(f"Diff test train accuracy: [{diff_test_train_acc}].") 
-            logging.info(f"Train root mean squared error: [{train_rmse}].")
-            logging.info(f"Test root mean squared error: [{test_rmse}].")
+            logging.info(f"Train F1 Score: [{train_f1_score}].")
+            logging.info(f"Test F1 Score: [{test_f1_score}].")
 
 
             #if model accuracy is greater than base accuracy and train and test score is within certain thershold
             #we will accept that model as accepted model
-            if model_accuracy >= base_accuracy and diff_test_train_acc < 0.05:
+            if model_accuracy >= base_accuracy and diff_test_train_acc < 0.6:
                 base_accuracy = model_accuracy
                 metric_info_artifact = MetricInfoArtifact(model_name=model_name,
                                                         model_object=model,
-                                                        train_rmse=train_rmse,
-                                                        test_rmse=test_rmse,
+                                                        train_f1_score=train_f1_score,
+                                                        test_f1_score=test_f1_score,
                                                         train_accuracy=train_acc,
                                                         test_accuracy=test_acc,
                                                         model_accuracy=model_accuracy,
