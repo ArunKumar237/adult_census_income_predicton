@@ -1,9 +1,9 @@
 training_pipeline_config:
-  pipeline_name: flight
+  pipeline_name: ml_project
   artifact_dir: artifact
 
 data_ingestion_config:
-  dataset_download_url: https://github.com/ArunKumar237/datasets/blob/main/adult.csv.zip
+  dataset_download_url: https://raw.githubusercontent.com/ArunKumar237/datasets/main/adult.zip
   raw_data_dir: raw_data
   tgz_download_dir: tgz_data
   ingested_dir: ingested_data
