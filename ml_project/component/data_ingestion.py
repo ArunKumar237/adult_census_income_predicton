@@ -7,8 +7,10 @@ import zipfile
 import numpy as np
 from six.moves import urllib
 import pandas as pd
-from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
+import warnings
+warnings.filterwarnings('ignore')
 
 
 class DataIngestion:
@@ -70,7 +72,7 @@ class DataIngestion:
 
 
             logging.info(f"Reading csv file: [{ml_project_file_path}]")
-            data = pd.read_csv(ml_project_file_path)
+            df = pd.read_csv(ml_project_file_path)
             
             #replacing '?' with nan
             df[df == '?'] = np.nan
@@ -104,8 +106,11 @@ class DataIngestion:
             df_upsampled["binned"] = df_upsampled['salary']
 
             logging.info(f"Splitting data into train and test")
-          
-            train_set, test_set, _, _ = train_test_split(df_upsampled.iloc[:,:-1], df_upsampled.iloc[:,-1], test_size = 0.2, random_state = 0, stratify=df_upsampled['salary'])
+
+            print(df_upsampled.shape)
+            train_set, test_set, _, _ = train_test_split(df_upsampled.iloc[:,:-1], df_upsampled.iloc[:,-1], test_size = 0.2, random_state = 0, stratify=df_upsampled['binned'])
+
+            print(train_set.shape,test_set.shape)
 
             train_file_path = os.path.join(self.data_ingestion_config.ingested_train_dir,
                                             file_name)
