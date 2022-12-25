@@ -8,6 +8,8 @@ import numpy as np
 from six.moves import urllib
 import pandas as pd
 from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.utils import resample
+
 
 class DataIngestion:
 
@@ -68,59 +70,42 @@ class DataIngestion:
 
 
             logging.info(f"Reading csv file: [{ml_project_file_path}]")
-            ml_project_data_frame = pd.read_csv(ml_project_file_path)
-
-            ml_project_data_frame.dropna(inplace=True)
-
-            ml_project_data_frame["journey_Date"]= pd.to_datetime(ml_project_data_frame['Date_of_Journey'], format= "%d/%m/%Y").dt.day
-            ml_project_data_frame["journey_Month"]= pd.to_datetime(ml_project_data_frame['Date_of_Journey'], format= "%d/%m/%Y").dt.month
-            ml_project_data_frame.drop(['Date_of_Journey'],axis=1,inplace=True)
-
-            ml_project_data_frame['Dep_hour']=pd.to_datetime(ml_project_data_frame['Dep_Time']).dt.hour  #pd.to_datetime
-            ml_project_data_frame['Dep_min']=pd.to_datetime(ml_project_data_frame['Dep_Time']).dt.minute
-            ml_project_data_frame.drop(['Dep_Time'],axis=1,inplace=True)
-
-            ml_project_data_frame['Arrival_hour']=pd.to_datetime(ml_project_data_frame['Arrival_Time']).dt.hour  #pd.to_datetime
-            ml_project_data_frame['Arrival_min']=pd.to_datetime(ml_project_data_frame['Arrival_Time']).dt.minute
-            ml_project_data_frame.drop(['Arrival_Time'],axis=1,inplace=True)
-
-            # Assigning and converting Duration column into list to extract hours ans minutes seperately
-            duration = list(ml_project_data_frame["Duration"])
-            for i in range(len(duration)):
-                if len(duration[i].split()) !=2:  # Check if duration contains only hour or mins
-                    if "h" in duration[i]:
-                        duration[i] = duration[i].strip() + " 0m"   # Adds 0 minute
-                    else:
-                        duration[i] = "0h " + duration[i]           # Adds 0 hour
-
-            duration_hours = []
-            duration_mins = []
-            for i in range(len(duration)):
-                duration_hours.append(int(duration[i].split(sep = "h")[0]))    # Extract hours from duration
-                duration_mins.append(int(duration[i].split(sep = "m")[0].split()[-1]))   # Extracts only minutes from duration
-
-            ml_project_data_frame["Duration_hours"] = duration_hours
-            ml_project_data_frame["Duration_mins"] = duration_mins
-            ml_project_data_frame.drop(['Duration'],axis=1,inplace=True)
-            ml_project_data_frame.drop(["Route", "Additional_Info"], axis = 1, inplace = True)
-            ml_project_data_frame.replace({'non-stop':0,'1 stop':1,'2 stops':2,'3 stops':3,'4 stops':4},inplace=True)
+            data = pd.read_csv(ml_project_file_path)
             
-            ml_project_data_frame.reset_index(inplace=True,drop=True)
-            ml_project_data_frame["binned"] = pd.cut(
-                ml_project_data_frame["Price"],
-                bins=[0,1759,5277,8372,12373,np.inf],
-                labels=[1,2,3,4,5]
-            )
+            #replacing '?' with nan
+            df[df == '?'] = np.nan
+
+            # removing duplicates
+            df.drop_duplicates(inplace=True)
+
+            # filling null values
+            for col in ['workclass', 'occupation', 'country']:
+                df[col].fillna(df[col].mode()[0], inplace=True)
+            
+            df['salary'] = df['salary'].str.replace('<=50K', '0')
+            df['salary'] = df['salary'].str.replace('>50K', '1')
+            df['salary'] = df['salary'].astype('int')
+
+            #create two different dataframe of majority and minority class 
+            df_majority = df[(df['salary']==0)] 
+            df_minority = df[(df['salary']==1)] 
+
+            # upsample minority class
+            df_minority_upsampled = resample(df_minority,
+                                            replace=True,    # sample with replacement
+                                            n_samples= df['salary'].value_counts().max(), # to match majority class
+                                            random_state=42,
+                                            )  # reproducible results
+
+            # Combine majority class with upsampled minority class
+            df_upsampled = pd.concat([df_minority_upsampled, df_majority])
+
+            df_upsampled.reset_index(inplace=True,drop=True)
+            df_upsampled["binned"] = df_upsampled['salary']
 
             logging.info(f"Splitting data into train and test")
-            strat_train_set = None
-            strat_test_set = None
-
-            split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
-
-            for train_index,test_index in split.split(ml_project_data_frame, ml_project_data_frame["binned"]):
-                strat_train_set = ml_project_data_frame.loc[train_index].drop(["binned"],axis=1)
-                strat_test_set = ml_project_data_frame.loc[test_index].drop(["binned"],axis=1)
+          
+            train_set, test_set, _, _ = train_test_split(df_upsampled.iloc[:,:-1], df_upsampled.iloc[:,-1], test_size = 0.2, random_state = 0, stratify=df_upsampled['salary'])
 
             train_file_path = os.path.join(self.data_ingestion_config.ingested_train_dir,
                                             file_name)
@@ -128,15 +113,15 @@ class DataIngestion:
             test_file_path = os.path.join(self.data_ingestion_config.ingested_test_dir,
                                         file_name)
             
-            if strat_train_set is not None:
+            if train_set is not None:
                 os.makedirs(self.data_ingestion_config.ingested_train_dir,exist_ok=True)
                 logging.info(f"Exporting training datset to file: [{train_file_path}]")
-                strat_train_set.to_csv(train_file_path,index=False)
+                train_set.to_csv(train_file_path,index=False)
 
-            if strat_test_set is not None:
+            if test_set is not None:
                 os.makedirs(self.data_ingestion_config.ingested_test_dir, exist_ok= True)
                 logging.info(f"Exporting test dataset to file: [{test_file_path}]")
-                strat_test_set.to_csv(test_file_path,index=False)
+                test_set.to_csv(test_file_path,index=False)
 
             data_ingestion_artifact = DataIngestionArtifact(train_file_path=train_file_path,
                                 test_file_path=test_file_path,
