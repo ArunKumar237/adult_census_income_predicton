@@ -28,7 +28,7 @@ MODEL_DIR = os.path.join(ROOT_DIR, SAVED_MODELS_DIR_NAME)
 from ml_project.logger import get_log_dataframe
 
 ml_project_DATA_KEY = "ml_project_data"
-ml_project_FAIR_VALUE_KEY = "price"
+ml_project_FAIR_VALUE_KEY = "salary"
 
 app = Flask(__name__)
 
@@ -108,38 +108,42 @@ def predict():
     }
 
     if request.method == 'POST':
-        Airline = request.form['Airline']
-        Source = request.form['Source']
-        Destination = request.form['Destination']
-        Total_Stops = int(request.form['Total_Stops'])
-        journey_Date = int(request.form['journey_Date'])
-        journey_Month = int(request.form['journey_Month'])
-        Dep_hour = int(request.form['Dep_hour'])
-        Dep_min = int(request.form['Dep_min'])
-        Arrival_hour = int(request.form['Arrival_hour'])
-        Arrival_min = int(request.form['Arrival_min'])
-        Duration_hours = int(request.form['Duration_hours'])
-        Duration_mins = int(request.form['Duration_mins'])
+        age = int(request.form["age"])
+        workclass = request.form["workclass"]
+        fnlwgt = int(request.form["fnlwgt"])
+        education = request.form["education"]
+        education_num = int(request.form["education_num"])
+        marital_status = request.form["marital_status"]
+        occupation = request.form["occupation"]
+        relationship = request.form["relationship"]
+        race = request.form["race"]
+        sex = request.form["sex"]
+        capital_gain = int(request.form["capital_gain"])
+        capital_loss = int(request.form["capital_loss"])
+        hours_per_week = int(request.form["hours_per_week"])
+        country = request.form["country"]
 
-        ml_project_data = ml_projectData(Airline = Airline,
-                                Source = Source,
-                                Destination = Destination,
-                                Total_Stops = Total_Stops,
-                                journey_Date = journey_Date,
-                                journey_Month = journey_Month,
-                                Dep_hour = Dep_hour,
-                                Dep_min = Dep_min,
-                                Arrival_hour = Arrival_hour,
-                                Arrival_min = Arrival_min,
-                                Duration_hours = Duration_hours,
-                                Duration_mins = Duration_mins
+        ml_project_data = ml_projectData(age = age,
+                    workclass = workclass,
+                    fnlwgt = fnlwgt,
+                    education = education,
+                    education_num = education_num,
+                    marital_status = marital_status,
+                    occupation = occupation,
+                    relationship = relationship,
+                    race = race,
+                    sex = sex,
+                    capital_gain = capital_gain,
+                    capital_loss = capital_loss,
+                    hours_per_week = hours_per_week,
+                    country = country                                
                                    )
         ml_project_df = ml_project_data.get_ml_project_input_data_frame()
         ml_project_predictor = ml_projectPredictor(model_dir=MODEL_DIR)
-        price = ml_project_predictor.predict(X=ml_project_df)
+        salary = ml_project_predictor.predict(X=ml_project_df)
         context = {
             ml_project_DATA_KEY: ml_project_data.get_ml_project_data_as_dict(),
-            ml_project_FAIR_VALUE_KEY: price,
+            ml_project_FAIR_VALUE_KEY: salary,
         }
         return render_template('predict.html', context=context)
     return render_template("predict.html", context=context)

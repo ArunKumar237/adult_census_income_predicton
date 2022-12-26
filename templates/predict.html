@@ -13,99 +13,180 @@
 
 
         <form action="/predict" method="post">
-            <legend>Flight Fare Estimation Form</legend>
+            <legend>Estimation Form</legend>
             <div class="mb-3">
-                <label class="form-label">Airline</label>
-                <select class="form-control" name="Airline" placeholder="Enter Airline" required>
-                    <option value="Air Asia"> Air Asia </option>
-                    <option value="Air India"> Air India </option>
-                    <option value="Jet Airways"> Jet Airways </option>
-                    <option value="Multiple carriers"> Multiple carriers </option>
-                    <option value="IndiGo"> IndiGo </option>
-                    <option value="SpiceJet"> SpiceJet </option>
-                    <option value="Vistara Premium economy"> Vistara Premium economy </option>
-                    <option value="GoAir"> GoAir </option>
-                    <option value="Vistara"> Vistara </option>
-                    <option value="Trujet"> Trujet </option>
-                    <option value="Multiple carriers Premium economy"> Multiple carriers Premium economy </option>
-                    <option value="Jet Airways Business"> Jet Airways Business </option>
+                <label class="form-label">Age</label>
+                <input class="form-control" type="text" name="age" placeholder="Enter a value of Total_Stops"
+                    required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">workclass</label>
+                <select class="form-control" name="workclass" placeholder="Enter Airline" required>
+                    <option value="Federal_gov">Federal_gov</option>
+                    <option value="Local_gov">Local_gov</option>
+                    <option value="Never_worked">Never_worked</option>
+                    <option value="Private">Private</option>
+                    <option value="Self_emp_inc">Self_emp_inc</option>
+                    <option value="Self_emp_not_inc">Self_emp_not_inc</option>
+                    <option value="State_gov">State_gov</option>
+                    <option value="Without_pay">Without_pay</option>
                 </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Source</label>
-                <select class="form-control" name="Source" placeholder="Enter Source" required>
-                    <option value="Banglore"> Banglore </option>
-                    <option value="Delhi"> Delhi </option>
-                    <option value="Kolkata"> Kolkata </option>
-                    <option value="Mumbai"> Mumbai </option>
-                    <option value="Chennai"> Chennai </option>
+                <label class="form-label">Final weight</label>
+                <input class="form-control" type="text" name="fnlwgt" placeholder="Enter a value of Total_Stops"
+                    required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Education</label>
+                <select class="form-control" name="education" placeholder="Enter Source" required>
+                    <option value="10th">10th</option>
+                    <option value="11th">11th</option>
+                    <option value="12th">12th</option>
+                    <option value="1st_4th">1st_4th</option>
+                    <option value="5th_6th">5th_6th</option>
+                    <option value="7th_8th">7th_8th</option>
+                    <option value="9th">9th</option>
+                    <option value="Assoc_acdm">Assoc_acdm</option>
+                    <option value="Assoc_voc">Assoc_voc</option>
+                    <option value="Bachelors">Bachelors</option>
+                    <option value="Doctorate">Doctorate</option>
+                    <option value="HS_grad">HS_grad</option>
+                    <option value="Masters">Masters</option>
+                    <option value="Preschool">Preschool</option>
+                    <option value="Prof_school">Prof_school</option>
+                    <option value="Some_college">Some_college</option>
                 </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Destination</label>
-                <select class="form-control" name="Destination" placeholder="Enter Destination" required>
-                    <option value="Delhi"> Delhi </option>
-                    <option value="Cochin"> Cochin </option>
-                    <option value="New Delhi"> New Delhi </option>
-                    <option value="Banglore"> Banglore </option>
-                    <option value="Hyderabad"> Hyderabad </option>
-                    <option value="Kolkata"> Kolkata </option>
+                <label class="form-label">Education number</label>
+                <input class="form-control" type="text" name="education_num" placeholder="Enter a value of Total_Stops"
+                    required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Marital status</label>
+                <select class="form-control" name="marital_status" placeholder="Enter Destination" required>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Married_AF_spouse">Married_AF_spouse</option>
+                    <option value="Married_civ_spouse">Married_civ_spouse</option>
+                    <option value="Married_spouse_absent">Married_spouse_absent</option>
+                    <option value="Never_married">Never_married</option>
+                    <option value="Separated">Separated</option>
+                    <option value="Widowed">Widowed</option>
                 </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Total Stops</label>
-                <input class="form-control" type="text" name="Total_Stops" placeholder="Enter a value of Total_Stops"
+                <label class="form-label">Occupation</label>
+                <select class="form-control" name="occupation" placeholder="Enter Destination" required>
+                    <option value="Adm_clerical">Adm_clerical</option>
+                    <option value="Armed_Forces">Armed_Forces</option>
+                    <option value="Craft_repair">Craft_repair</option>
+                    <option value="Exec_managerial">Exec_managerial</option>
+                    <option value="Farming_fishing">Farming_fishing</option>
+                    <option value="Handlers_cleaners">Handlers_cleaners</option>
+                    <option value="Machine_op_inspct">Machine_op_inspct</option>
+                    <option value="Other_service">Other_service</option>
+                    <option value="Priv_house_serv">Priv_house_serv</option>
+                    <option value="Prof_specialty">Prof_specialty</option>
+                    <option value="Protective_serv">Protective_serv</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Tech_support">Tech_support</option>
+                    <option value="Transport_moving">Transport_moving</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Relationship</label>
+                <select class="form-control" name="relationship" placeholder="Enter Destination" required>
+                    <option value="Husband">Husband</option>
+                    <option value="Not_in_family">Not_in_family</option>
+                    <option value="Other_relative">Other_relative</option>
+                    <option value="Own_child">Own_child</option>
+                    <option value="Unmarried">Unmarried</option>
+                    <option value="Wife">Wife</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Race</label>
+                <select class="form-control" name="race" placeholder="Enter Destination" required>
+                    <option value="Amer_Indian_Eskimo">Amer_Indian_Eskimo</option>
+                    <option value="Asian_Pac_Islander">Asian_Pac_Islander</option>
+                    <option value="Black">Black</option>
+                    <option value="Other">Other</option>
+                    <option value="White">White</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Sex</label>
+                <select class="form-control" name="sex" placeholder="Enter Destination" required>
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Capital gain</label>
+                <input class="form-control" type="text" name="capital_gain" placeholder="Enter a value of Total_Stops"
                     required />
 
             </div>
             <div class="mb-3">
-                <label class="form-label">Journey Day</label>
-                <input class="form-control" type="text" name="journey_Date"
+                <label class="form-label">Capital loss</label>
+                <input class="form-control" type="text" name="capital_loss"
                     placeholder="Enter a Journey Day" required />
             </div>
             <div class="mb-3">
-                <label class="form-label">Journey Month</label>
-                <input class="form-control" type="text" name="journey_Month" placeholder="Enter a Journey Month"
+                <label class="form-label">Hours per week</label>
+                <input class="form-control" type="text" name="hours_per_week" placeholder="Enter a Journey Month"
                     required />
             </div>
             <div class="mb-3">
-                <label class="form-label">Departure Hour</label>
-                <input class="form-control" type="text" name="Dep_hour" placeholder="Enter a Departure Hour"
-                    required />
+                <label class="form-label">Country</label>
+                <select class="form-control" name="country" placeholder="Enter Destination" required>
+                    <option value="Cambodia">Cambodia</option>
+                    <option value="Canada">Canada</option>
+                    <option value="China">China</option>
+                    <option value="Columbia">Columbia</option>
+                    <option value="Cuba">Cuba</option>
+                    <option value="Dominican_Republic">Dominican_Republic</option>
+                    <option value="Ecuador">Ecuador</option>
+                    <option value="El_Salvador">El_Salvador</option>
+                    <option value="England">England</option>
+                    <option value="France">France</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Greece">Greece</option>
+                    <option value="Guatemala">Guatemala</option>
+                    <option value="Haiti">Haiti</option>
+                    <option value="Holand_Netherlands">Holand_Netherlands</option>
+                    <option value="Honduras">Honduras</option>
+                    <option value="Hong">Hong</option>
+                    <option value="Hungary">Hungary</option>
+                    <option value="India">India</option>
+                    <option value="Iran">Iran</option>
+                    <option value="Ireland">Ireland</option>
+                    <option value="Italy">Italy</option>
+                    <option value="Jamaica">Jamaica</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Laos">Laos</option>
+                    <option value="Mexico">Mexico</option>
+                    <option value="Nicaragua">Nicaragua</option>
+                    <option value="Outlying_US(Guam_USVI_etc)">Outlying_US(Guam_USVI_etc)</option>
+                    <option value="Peru">Peru</option>
+                    <option value="Philippines">Philippines</option>
+                    <option value="Poland">Poland</option>
+                    <option value="Portugal">Portugal</option>
+                    <option value="Puerto_Rico">Puerto_Rico</option>
+                    <option value="Scotland">Scotland</option>
+                    <option value="South">South</option>
+                    <option value="Taiwan">Taiwan</option>
+                    <option value="Thailand">Thailand</option>
+                    <option value="Trinadad&Tobago">Trinadad&Tobago</option>
+                    <option value="United_States">United_States</option>
+                    <option value="Vietnam">Vietnam</option>
+                    <option value="Yugoslavia">Yugoslavia</option>
+                </select>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Departure Minute</label>
-                <input class="form-control" type="text" name="Dep_min"
-                    placeholder="Enter a Departure Minute" required />
-            </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Arrival Hour</label>
-                <input class="form-control" type="text" name="Arrival_hour"
-                    placeholder="Enter a Arrival Hour" required />
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Arrival Minute</label>
-                <input class="form-control" type="text" name="Arrival_min"
-                    placeholder="Enter a Arrival Minute" required />
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Duration Hour</label>
-                <input class="form-control" type="text" name="Duration_hours"
-                    placeholder="Enter a Duration Hour" required />
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Duration Minute</label>
-                <input class="form-control" type="text" name="Duration_mins"
-                    placeholder="Enter a Duration Minute" required />
-            </div>
-
-            <div class="mb-3">
-                <input class="btn btn-primary" type="submit" value="Predict Ticket Price" required />
+                <input class="btn btn-primary" type="submit" value="Predict Salary" required />
             </div>
 
         </form>
@@ -114,18 +195,18 @@
     <div class="col-md-6 col-sm-12 col-xs-6 col-lg-6">
         <div class="card">
             <div class="card-header">
-              Flight Ticket Price
+              Salary
             </div>
             <div class="card-body">
-        {% if context['flight_data'] is not none %}
+        {% if context['ml_project_data'] is not none %}
         <table class="table table-striped">
-            <caption>Flight Ticket Price Prediction </caption>
+            <caption>Salary Prediction </caption>
             <tr>
                 <th>Input Feature</th>
                 <th>Feature Value</th>
 
             </tr>
-            {% for column,value in context['flight_data'].items() %}
+            {% for column,value in context['ml_project_data'].items() %}
 
 
 
@@ -137,9 +218,9 @@
             {% endfor %}
             <tr>
 
-                <td>Ticket Price </td>
+                <td>Salary </td>
                 <td>
-                    {{ context['price'] }}
+                    {{ context['salary'] }}
                 </td>
             </tr>
         </table>
@@ -147,7 +228,7 @@
         {% else %}
        
               <h5 class="card-title">Submit Form</h5>
-              <p class="card-text">Kindly provide necessary information to estimate flight ticket price</p>
+              <p class="card-text">Kindly provide necessary information to estimate salary</p>
             
          
 

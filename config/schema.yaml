@@ -3,28 +3,28 @@ columns:
   workclass : category
   fnlwgt : int
   education : category
-  education-num : int
-  marital-status : category
+  education_num : int
+  marital_status : category
   occupation : category
   relationship : category
   race : category
   sex : category
-  capital-gain : int
-  capital-loss : int
-  hours-per-week : int
+  capital_gain : int
+  capital_loss : int
+  hours_per_week : int
   country : category
   salary : category
 numerical_columns:
   - age
   - fnlwgt
-  - education-num
-  - capital-gain
-  - capital-loss
-  - hours-per-week
+  - education_num
+  - capital_gain
+  - capital_loss
+  - hours_per_week
 categorical_columns:
   - workclass
   - education
-  - marital-status
+  - marital_status
   - occupation
   - relationship
   - race

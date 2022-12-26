@@ -1,14 +1,14 @@
-from ml_project.entity.config_entity import DataIngestionConfig
-import sys,os
 from ml_project.exception import ProjectException
 from ml_project.logger import logging
+from ml_project.entity.config_entity import DataIngestionConfig
 from ml_project.entity.artifact_entity import DataIngestionArtifact
-import zipfile 
-import numpy as np
-from six.moves import urllib
-import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
+from six.moves import urllib
+import sys,os
+import zipfile 
+import numpy as np
+import pandas as pd
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -73,9 +73,23 @@ class DataIngestion:
 
             logging.info(f"Reading csv file: [{ml_project_file_path}]")
             df = pd.read_csv(ml_project_file_path)
+
+            #renaming the columns by replacing '-' hiphen with '_' underscore
+            df.rename(columns={'education-num': 'education_num',
+                    'marital-status': 'marital_status',
+                    'capital-gain':'capital_gain',
+                    'capital-loss':'capital_loss',
+                    'hours-per-week':'hours_per_week'},
+                    inplace=True, errors='raise')
+
+            #renaming the column values by replacing '-' hiphen with '_' underscore
+            cat = ['workclass','education','marital_status','occupation','relationship','race','sex','country']
+            for i in cat:
+                df[i] = df[i].str.replace('-','_')
+                df[i] = df[i].str.strip()
             
             #replacing '?' with nan
-            df[df == '?'] = np.nan
+            df = df.replace(' ?', np.nan)
 
             # removing duplicates
             df.drop_duplicates(inplace=True)

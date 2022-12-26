@@ -10,34 +10,38 @@ import pandas as pd
 class ml_projectData:
 
     def __init__(self,
-                Airline : str,
-                Source : str,
-                Destination : str,
-                Total_Stops : int,
-                journey_Date : int,
-                journey_Month : int,
-                Dep_hour : int,
-                Dep_min : int,
-                Arrival_hour : int,
-                Arrival_min : int,
-                Duration_hours : int,
-                Duration_mins : int,
-                Price : int = None
+                age:str,
+                workclass:int,
+                fnlwgt:str,
+                education:int,
+                education_num:str,
+                marital_status:int,
+                occupation:int,
+                relationship:int,
+                race:int,
+                sex:int,
+                capital_gain:str,
+                capital_loss:str,
+                hours_per_week:str,
+                country:int,
+                salary:str = None
                  ):
         try:
-            self.Airline = Airline
-            self.Source = Source
-            self.Destination = Destination
-            self.Total_Stops = Total_Stops
-            self.journey_Date = journey_Date
-            self.journey_Month = journey_Month
-            self.Dep_hour = Dep_hour
-            self.Dep_min = Dep_min
-            self.Arrival_hour = Arrival_hour
-            self.Arrival_min = Arrival_min
-            self.Duration_hours = Duration_hours
-            self.Duration_mins = Duration_mins
-            self.Price = Price
+            self.age = age
+            self.workclass = workclass
+            self.fnlwgt = fnlwgt
+            self.education = education
+            self.education_num = education_num
+            self.marital_status = marital_status
+            self.occupation = occupation
+            self.relationship = relationship
+            self.race = race
+            self.sex = sex
+            self.capital_gain = capital_gain
+            self.capital_loss = capital_loss
+            self.hours_per_week = hours_per_week
+            self.country = country
+            self.salary = salary
         except Exception as e:
             raise ProjectException(e, sys) from e
 
@@ -52,18 +56,20 @@ class ml_projectData:
     def get_ml_project_data_as_dict(self):
         try:
             input_data = {
-                "Airline" : [self.Airline],
-                "Source" : [self.Source],
-                "Destination" : [self.Destination],
-                "Total_Stops" : [self.Total_Stops],
-                "journey_Date" : [self.journey_Date],
-                "journey_Month" : [self.journey_Month],
-                "Dep_hour" : [self.Dep_hour],
-                "Dep_min" : [self.Dep_min],
-                "Arrival_hour" : [self.Arrival_hour],
-                "Arrival_min" : [self.Arrival_min],
-                "Duration_hours" : [self.Duration_hours],
-                "Duration_mins" : [self.Duration_mins],
+                "age" : [self.age],
+                "workclass" : [self.workclass],
+                "fnlwgt" : [self.fnlwgt],
+                "education" : [self.education],
+                "education_num" : [self.education_num],
+                "marital_status" : [self.marital_status],
+                "occupation" : [self.occupation],
+                "relationship" : [self.relationship],
+                "race" : [self.race],
+                "sex" : [self.sex],
+                "capital_gain" : [self.capital_gain],
+                "capital_loss" : [self.capital_loss],
+                "hours_per_week" : [self.hours_per_week],
+                "country" : [self.country]
                 }
             return input_data
         except Exception as e:
@@ -92,7 +98,10 @@ class ml_projectPredictor:
         try:
             model_path = self.get_latest_model_path()
             model = load_object(file_path=model_path)
-            price = model.predict(X)
-            return price
+            salary = model.predict(X)
+            if salary == 1:
+                return 'salary will be >50k'
+            elif salary == 0:
+                return 'salary will be <50k'
         except Exception as e:
             raise ProjectException(e, sys) from e
